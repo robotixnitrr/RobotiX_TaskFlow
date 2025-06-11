@@ -31,7 +31,7 @@ export interface FlowChartUser {
     id: number
     name: string
     email: string
-    position: "overall-cordinator" | "head-coordinator" | "core-coordinator" | "executive" | "members"
+    position: "overall-coordinator" | "head-coordinator" | "core-coordinator" | "executive" | "members"
 }
 
 export type FlowChartData = {
@@ -46,7 +46,7 @@ const horizontalSpacing = 400
 
 const getPositionColor = (position: string) => {
     const colors = {
-        "overall-cordinator": "#dc2626",
+        "overall-coordinator": "#dc2626",
         "head-coordinator": "#ea580c",
         "core-coordinator": "#d97706",
         executive: "#059669",

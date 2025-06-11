@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import { useAuth } from "@/components/auth-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { CheckCircle, Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useAuth } from "@/hooks/use-auth"
 
 export default function RegisterPage() {
   const [name, setName] = useState("")
@@ -19,7 +19,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   // const [role, setRole] = useState<"assigner" | "assignee">("assignee")
-  const [position, setPosition] = useState<'overall-cordinator' | 'head-coordinator' | 'core-coordinator' | 'executive' | 'members'>("members")
+  const [position, setPosition] = useState<'overall-coordinator' | 'head-coordinator' | 'core-coordinator' | 'executive' | 'members'>("members")
   const { register, isLoading } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -87,12 +87,12 @@ export default function RegisterPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="position">Position</Label>
-              <Select value={position} onValueChange={(e) => setPosition(e as 'overall-cordinator' | 'head-coordinator' | 'core-coordinator' | 'executive' | 'members')}>
+              <Select value={position} onValueChange={(e) => setPosition(e as 'overall-coordinator' | 'head-coordinator' | 'core-coordinator' | 'executive' | 'members')}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select your position" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="overall-cordinator">Overall coordinator</SelectItem>
+                  <SelectItem value="overall-coordinator">Overall coordinator</SelectItem>
                   <SelectItem value="head-coordinator">Head coordinator</SelectItem>
                   <SelectItem value="core-coordinator">Core coordinator</SelectItem>
                   <SelectItem value="executive">Executive</SelectItem>

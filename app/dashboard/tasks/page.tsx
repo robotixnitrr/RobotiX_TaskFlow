@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useAuth } from "@/components/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import DashboardLayout from "@/components/dashboard-layout"
 import { PriorityBadge } from "@/components/priority-badge"
 import { StatusBadge } from "@/components/status-badge"
@@ -116,7 +116,7 @@ export default function TasksPage() {
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       result = result.filter(
-        (task) => task.title.toLowerCase().includes(query) || task.description.toLowerCase().includes(query),
+        (task) => task.title.toLowerCase().includes(query) || task.description?.toLowerCase().includes(query),
       )
     }
 
@@ -378,7 +378,7 @@ export default function TasksPage() {
                   <SelectContent>
                     <SelectItem value="all">All Assigners</SelectItem>
                     {uniqueAssigners.map((assigner) => (
-                      <SelectItem key={assigner.id} value={assigner.id.toString()}>
+                      <SelectItem key={assigner.id} value={assigner.id?.toString() as string}>
                         {assigner.name}
                       </SelectItem>
                     ))}
@@ -432,7 +432,7 @@ export default function TasksPage() {
                                 <StatusBadge status={task.status as "pending" | "in-progress" | "completed"} />
                               </TableCell>
                               <TableCell className="whitespace-nowrap">
-                                {new Date(task.dueDate).toLocaleDateString()}
+                                {new Date(task.dueDate || '').toLocaleDateString()}
                               </TableCell>
                               <TableCell>
                                 <div className="flex items-center gap-2">

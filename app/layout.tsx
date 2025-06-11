@@ -1,20 +1,24 @@
 import type React from "react"
 import { Inter } from "next/font/google"
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/providers/theme-provider"
+import { AuthProvider } from "@/components/providers/auth-provider"
 import { Toaster } from "@/components/ui/toaster"
-import { AuthProvider } from "@/components/auth-provider"
+import { ErrorBoundary } from "@/components/ui/error-boundary"
+import { APP_CONFIG } from "@/lib/constants"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
-  title: "ROBOTIx TaskFlow - Task Management Application",
-  description: "A modern task management application for teams",
+  title: `${APP_CONFIG.name} - ${APP_CONFIG.description}`,
+  description: APP_CONFIG.description,
   icons: {
-    icon: "/logoWhite.png", // or "/favicon.png" or "/favicon.svg"
+    icon: "/logoWhite.png",
     shortcut: "/favicon.ico",
   },
+    generator: 'v0.dev'
 }
+
 export default function RootLayout({
   children,
 }: {
@@ -23,12 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <AuthProvider>
-            {children}
-            <Toaster />
-          </AuthProvider>
-        </ThemeProvider>
+        <ErrorBoundary>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <AuthProvider>
+              {children}
+              <Toaster />
+            </AuthProvider>
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

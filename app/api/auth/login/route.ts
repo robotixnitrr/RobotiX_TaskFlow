@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/db"; // adjust to your actual path
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
   try {
@@ -46,11 +47,23 @@ export async function POST(request: NextRequest) {
 
     console.log("Login successful for:", userWithoutPassword.email);
 
-    return NextResponse.json({
-      success: true,
-      user: userWithoutPassword,
-      message: "Login successful",
-    });
+    const cookieValue = encodeURIComponent(JSON.stringify(userWithoutPassword));
+
+    const response = new NextResponse(
+      JSON.stringify({
+        success: true,
+        user: userWithoutPassword,
+        message: "Login successful",
+      }),
+      {
+        status: 200,
+        headers: {
+          "Set-Cookie": `user=${cookieValue}; Path=/; Max-Age=86400; HttpOnly; Secure; SameSite=Strict`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useAuth } from "@/components/auth-provider"
 import { TaskCard } from "@/components/task-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,6 +14,7 @@ import type { TaskWithTypedAssignees } from "@/db/schema"
 import { ArrowRight, CheckCircle2, Clock, ClipboardList, Loader2, PlusCircle, GripVertical } from "lucide-react"
 import DashboardLayout from "@/components/dashboard-layout"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/hooks/use-auth"
 
 export default function DashboardPage() {
   const { user } = useAuth()

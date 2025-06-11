@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import UnifiedFlow, { type FlowChartUser } from "@/components/task-chart"
 import type { TaskWithTypedAssignees } from "@/db/schema"
-import { useAuth } from "@/components/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import { getTasksByUserId } from "@/lib/actions"
 
 const FlowPage = () => {

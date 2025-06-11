@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { useAuth } from "@/components/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import DashboardLayout from "@/components/dashboard-layout"
 import { DatabaseStatus } from "@/components/database-status"
 import { Button } from "@/components/ui/button"
@@ -25,7 +25,7 @@ export default function SettingsPage() {
   const [profileForm, setProfileForm] = useState({
     name: user?.name || "",
     email: user?.email || "",
-    position: user?.position || "" as 'overall-cordinator' | 'head-coordinator' | 'core-coordinator' | 'executive' | 'members',
+    position: user?.position || "" as 'overall-coordinator' | 'head-coordinator' | 'core-coordinator' | 'executive' | 'members',
   })
 
   const [notificationSettings, setNotificationSettings] = useState({
@@ -130,12 +130,12 @@ export default function SettingsPage() {
                   <div className="space-y-2">
                     <Label htmlFor="position">Position</Label>
                     {/* <Input id="position" name="position" value={profileForm.position} onChange={handleProfileChange} /> */}
-                    <Select value={profileForm.position} onValueChange={(e) => setProfileForm((prev) => ({ ...prev, position: e as 'overall-cordinator' | 'head-coordinator' | 'core-coordinator' | 'executive' | 'members' }))}>
+                    <Select value={profileForm.position} onValueChange={(e) => setProfileForm((prev) => ({ ...prev, position: e as 'overall-coordinator' | 'head-coordinator' | 'core-coordinator' | 'executive' | 'members' }))}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select your position" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="overall-cordinator">Overall coordinator</SelectItem>
+                        <SelectItem value="overall-coordinator">Overall coordinator</SelectItem>
                         <SelectItem value="head-coordinator">Head coordinator</SelectItem>
                         <SelectItem value="core-coordinator">Core coordinator</SelectItem>
                         <SelectItem value="executive">Executive</SelectItem>

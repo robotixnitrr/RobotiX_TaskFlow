@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useEffect, useState, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/components/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import DashboardLayout from "@/components/dashboard-layout"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -288,7 +288,7 @@ export default function CreateTaskPage() {
         description: formState.data.description.trim(),
         status: "pending" as const,
         priority: formState.data.priority,
-        dueDate: formState.data.dueDate,
+        dueDate: new Date(formState.data.dueDate),
         assignerId: Number(user.id),
         assignerName: user.name,
         assignee:

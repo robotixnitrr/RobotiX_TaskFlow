@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { useAuth } from "@/components/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import DashboardLayout from "@/components/dashboard-layout"
 import { PriorityBadge } from "@/components/priority-badge"
 import { StatusBadge } from "@/components/status-badge"

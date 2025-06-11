@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
     const validPositions = [
-      "overall-cordinator",
+      "overall-coordinator",
       "head-coordinator",
       "core-coordinator",
       "executive",

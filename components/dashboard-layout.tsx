@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useAuth } from "@/components/auth-provider"
+import { useAuth } from "@/hooks/use-auth"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -29,8 +29,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ModeToggle } from "@/components/mode-toggle"
 import { getNotifications, markNotificationsAsRead } from "@/lib/actions"
-import { Bell, CheckCircle, ClipboardList, Home, LogOut, PlusCircle, Settings, User, Zap } from "lucide-react"
-import Image from "next/image"
+import { Bell, ClipboardList, Home, LogOut, PlusCircle, Settings, User, Zap, Code } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -77,7 +76,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return null
   }
 
-  const canAssignTasks = ["overall-cordinator", "head-coordinator", "core-coordinator"].includes(user.position || "");
+  const canAssignTasks = ["overall-coordinator", "head-coordinator", "core-coordinator"].includes(user.position || "")
   const userInitials = user.name
     .split(" ")
     .map((n) => n[0])
@@ -90,9 +89,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (pathname === "/dashboard") return "Dashboard"
     if (pathname === "/dashboard/tasks") return "Tasks"
     if (pathname === "/dashboard/create-task") return "Create Task"
+    if (pathname === "/dashboard/projects") return "Projects"
+    if (pathname === "/dashboard/create-project") return "Create Project"
     if (pathname === "/dashboard/settings") return "Settings"
     if (pathname.match(/^\/dashboard\/tasks\/[^/]+$/)) return "Task Details"
     if (pathname.match(/^\/dashboard\/tasks\/[^/]+\/edit$/)) return "Edit Task"
+    if (pathname.match(/^\/dashboard\/projects\/[^/]+$/)) return "Project Details"
+    if (pathname.match(/^\/dashboard\/projects\/[^/]+\/edit$/)) return "Edit Project"
     return "Dashboard"
   }
 
@@ -113,7 +116,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {/* <CheckCircle className="h-6 w-6 text-white" /> */}
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                RobotiX TaskFlow
+                RobotiX Team Management
               </span>
             </div>
           </SidebarHeader>
@@ -142,6 +145,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <Link href="/dashboard/tasks" className="flex items-center gap-3">
                     <ClipboardList className="h-5 w-5" />
                     <span>Tasks</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/dashboard/projects" || pathname.startsWith("/dashboard/projects/")}
+                  className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-200"
+                >
+                  <Link href="/dashboard/projects" className="flex items-center gap-3">
+                    <Code className="h-5 w-5" />
+                    <span>Projects</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -221,19 +237,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       markNotificationsAsRead(user.id)
                       updateUser({
                         ...user,
-                        lastNotificationReadAt: new Date()
+                        lastNotificationReadAt: new Date(),
                       })
                     }
-                  }}>
+                  }}
+                >
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
                       size="icon"
                       className="relative focus-ring hover:bg-primary/5 transition-colors"
-                    // onClick={() => {
-                    //   console.log("user", user.id)
-                    //   markNotificationsAsRead(user.id)
-                    // }}
+                      // onClick={() => {
+                      //   console.log("user", user.id)
+                      //   markNotificationsAsRead(user.id)
+                      // }}
                     >
                       <Bell className="h-5 w-5" />
                       {unreadNotifications.length > 0 && (
@@ -253,19 +270,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <DropdownMenuSeparator />
 
                     {isLoading ? (
-                      <div className="p-4 text-center text-sm text-muted-foreground">
-                        Loading notifications...
-                      </div>
+                      <div className="p-4 text-center text-sm text-muted-foreground">Loading notifications...</div>
                     ) : notifications.length === 0 ? (
-                      <div className="p-4 text-center text-sm text-muted-foreground">
-                        No new notifications yet
-                      </div>
+                      <div className="p-4 text-center text-sm text-muted-foreground">No new notifications yet</div>
                     ) : (
                       notifications.slice(0, 5).map((notification) => (
                         <DropdownMenuItem
                           key={notification.id}
-                          className={`flex flex-col items-start gap-1 p-3 ${!notification.read ? "bg-muted/50" : ""
-                            }`}
+                          className={`flex flex-col items-start gap-1 p-3 ${!notification.read ? "bg-muted/50" : ""}`}
                         >
                           <span className="font-medium">{notification.title}</span>
                           <span className="text-xs text-muted-foreground">{notification.message}</span>
@@ -285,7 +297,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     )}
                   </DropdownMenuContent>
                 </DropdownMenu>
-
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
