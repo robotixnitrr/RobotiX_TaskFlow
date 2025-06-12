@@ -1,5 +1,0 @@
-npx drizzle-kit generate
-npx drizzle-kit push
-
-npm run generate
-npx drizzle-kit push --config=drizzle.config
